@@ -3,6 +3,7 @@ request.onreadystatechange = function () {
   if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
     var response = JSON.parse(this.responseText);
     console.log(response);
+
     // for (let i = 0; i < response.length; i++) {
     //   let descrip = ["descri1", "descri2", "descri3", "descri4", "descri5"];
     //   let img = ["img1", "img2", "img3", "img4", "img5"];
@@ -33,7 +34,7 @@ request.onreadystatechange = function () {
     var a = document.getElementById("carte");
     let produit = document.getElementById("produit");
 
-    for (let i = 0; i < response.length - 1; i++) {
+    for (let j = 0; j < response.length - 1; j++) {
       var clone = a.cloneNode(true);
       produit.appendChild(clone);
     }
@@ -49,6 +50,12 @@ request.onreadystatechange = function () {
       img[i].setAttribute("src", response[i].imageUrl);
       title[i].textContent = "Appareil photo : " + response[i].name;
       prix[i].textContent = "Prix : " + response[i].price + " euro";
+
+      console.log("http://localhost:3000/api/cameras/" + response[i]._id);
+
+      let page2 = document.querySelectorAll("#page2");
+      page2[i].href = "produit.html?" + response[i]._id;
+      console.log(page2);
     }
   }
 };
