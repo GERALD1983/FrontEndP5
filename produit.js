@@ -29,31 +29,42 @@ request.onreadystatechange = function () {
 
     function clic() {
       console.log("Clic !");
-      console.log(
-        response.name,
-        lentilles.value,
-        response.price,
-        response.imageUrl
-      );
 
-      let tab = {
+      /*
         name: response.name,
         lentille: lentilles.value,
         prix: response.price,
         img: response.imageUrl,
-      };
-      let tabLine = JSON.stringify(tab);
-      localStorage.setItem("object", tabLine);
+      */
 
-      console.log(localStorage.getItem("object"));
-
+      var object = "object";
       var line = localStorage.getItem("object");
+
+      var objectJs = JSON.parse(line);
+
+      if (objectJs === null) {
+        objectJs = [];
+      }
+
+      objectJs.push([response, lentilles.value]);
+
+      var tabLine = JSON.stringify(objectJs);
+
+      localStorage.setItem(object, tabLine);
+
+      /*
+      console.log(localStorage.getItem(object));
+
+      var line = localStorage.getItem(object);
+
       var objectJs = JSON.parse(line);
 
       console.log(objectJs);
       console.log(line.length);
       console.log(objectJs.name);
       console.log(localStorage.length);
+
+ */
     }
     panier.addEventListener("click", clic);
   }

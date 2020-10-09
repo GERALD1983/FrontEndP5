@@ -62,32 +62,49 @@
         <h1 class="text-center text-info py-5">Votre panier</h1>
         <div class="row mb-5 py-5 shadow-lg">
           <div
+            id="prod"
             class="col-4 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
             <h3>Produit</h3>
-            <p>aucun</p>
+            <div id="produit">
+              aucun
+              <img
+                id="img"
+                class="border border-black"
+                src=""
+                alt=""
+                width="50px"
+                height="40px"
+              />
+            </div>
           </div>
           <div
+            id="price"
             class="col-2 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
             <h3>Prix</h3>
-            <p>0</p>
+            <p id="prix">0</p>
           </div>
           <div
+            id="quant"
             class="col-2 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
             <h3>Quantite</h3>
-            <p>0</p>
+            <p id="quantite">0</p>
           </div>
           <div
+            id="tot"
             class="col-4 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
             <h3>Total</h3>
-            <p>0</p>
+            <p id="total">0</p>
           </div>
-          <div class="col-12 py-3 pr-5 d-flex flex-column bg-warning">
+          <div
+            id="soustot"
+            class="col-12 py-3 pr-5 d-flex flex-column bg-warning"
+          >
             <h4 class="pr-5 d-flex justify-content-end">Sous-Total :</h4>
-            <p class="pr-5 d-flex justify-content-end">0</p>
+            <p id="soustotal" class="pr-5 d-flex justify-content-end">0</p>
           </div>
           <div class="col-12 py-5 d-flex justify-content-center bg-warning">
             <h5>Votre panier est vide pour le moment !</h5>
@@ -160,5 +177,6 @@
         </li>
       </ul>
     </footer>
+    <script src="/panier.js"></script>
   </body>
 </html>
