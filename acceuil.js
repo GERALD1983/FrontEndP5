@@ -4,19 +4,28 @@ request.onreadystatechange = function () {
     var response = JSON.parse(this.responseText);
     console.log(response);
 
-    var a = document.getElementById("carte");
+    // recuperation carte html et parent
+
+    var carte = document.getElementById("carte");
     let produit = document.getElementById("produit");
 
+    // boucle de clonage de carte html et association parent
+
     for (let j = 0; j < response.length - 1; j++) {
-      var clone = a.cloneNode(true);
+      var clone = carte.cloneNode(true);
       produit.appendChild(clone);
     }
+
+    // recuperation de toutes les carte cloner et leur contenu
+
     let carteClone = document.querySelectorAll("#carte");
-    console.log(carteClone);
     let descrip = document.querySelectorAll("#descri1");
     let img = document.querySelectorAll("#img1");
     let title = document.querySelectorAll("#titre1");
     let prix = document.querySelectorAll("#prix1");
+    console.log(carteClone);
+
+    // boucle ajout du contenu dans les differentes cartes et redirection sur la page produit choisi
 
     for (let i = 0; i < response.length; i++) {
       descrip[i].textContent = response[i].description;
@@ -26,9 +35,9 @@ request.onreadystatechange = function () {
 
       console.log("http://localhost:3000/api/cameras/" + response[i]._id);
 
-      let page2 = document.querySelectorAll("#page2");
-      page2[i].href = "produit.html?/id=" + response[i]._id;
-      console.log(page2);
+      let pageProduit = document.querySelectorAll("#page2");
+      pageProduit[i].href = "produit.html?/id=" + response[i]._id;
+      console.log(pageProduit);
     }
   }
 };

@@ -10,6 +10,7 @@
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="/style.css" />
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -60,13 +61,13 @@
       </header>
       <section class="container">
         <h1 class="text-center text-info py-5">Votre panier</h1>
-        <div class="row mb-5 py-5 shadow-lg">
+        <div class="row mb-5 py-5 shadow-lg panier-largeur">
           <div
             id="prod"
             class="col-4 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
             <h3>Produit</h3>
-            <div id="produit">
+            <div id="produit" class="hauteur-panier largeur-produit">
               aucun
               <img
                 id="img"
@@ -76,6 +77,7 @@
                 width="50px"
                 height="40px"
               />
+              <button id="supprimer">supprim</button>
             </div>
           </div>
           <div
@@ -83,21 +85,21 @@
             class="col-2 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
             <h3>Prix</h3>
-            <p id="prix">0</p>
+            <div id="prix" class="hauteur-panier">0</div>
           </div>
           <div
             id="quant"
             class="col-2 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
-            <h3>Quantite</h3>
-            <p id="quantite">0</p>
+            <h3>Nbr</h3>
+            <div id="quantite" class="hauteur-panier">0</div>
           </div>
           <div
             id="tot"
             class="col-4 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
             <h3>Total</h3>
-            <p id="total">0</p>
+            <div id="total" class="hauteur-panier">0</div>
           </div>
           <div
             id="soustot"
@@ -111,49 +113,72 @@
           </div>
         </div>
       </section>
-      <section class="container" style="height: 400px">
-        <h2 class="text-center text-info pt-5 mb-5">
+      <section class="container">
+        <h2 id="texte-remplir" class="text-center text-info pt-5 mb-5">
           Ajouter vos produits au panier pour le moment !
         </h2>
-        <h4 class="text-center text-info">
+        <h4 id="texte-valider" class="text-center text-info mb-5">
           Ensuite vous pourrez valider votre panier Merci !
         </h4>
-        <form class="invisible">
+        <form id="formulaire" class="invisible">
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="Name">Nom</label>
-              <input type="text" class="form-control" placeholder="name" />
+              <input
+                id="nom"
+                type="text"
+                class="form-control"
+                placeholder="name"
+              />
+              <span id="aideNom"></span>
             </div>
             <div class="form-group col-md-6">
               <label for="Name">Prenom</label>
               <input
+                id="prenom"
                 type="text"
                 class="form-control"
                 placeholder="first name"
               />
+              <span id="aidePrenom"></span>
             </div>
           </div>
           <div class="form-group">
             <label for="email">Email address</label>
             <input
+              id="email"
               type="email"
               class="form-control"
               placeholder="name@example.com"
             />
+            <span id="aideEmail"></span>
           </div>
           <div class="form-group">
             <label for="adress">Adresse</label>
-            <input type="text" class="form-control" placeholder="number, rue" />
+            <input
+              id="adresse"
+              type="text"
+              class="form-control"
+              placeholder="number, rue"
+            />
+            <span id="aideAdresse"></span>
           </div>
           <div class="form-row">
             <div class="form-group col-md-12">
               <label for="ville">Ville</label>
-              <input type="text" class="form-control" placeholder="city" />
+              <input
+                id="ville"
+                type="text"
+                class="form-control"
+                placeholder="city"
+              />
+              <span id="aideVille"></span>
             </div>
           </div>
           <div class="d-flex justify-content-center pb-3">
             <button
-              type="submit"
+              id="valider"
+              type="text"
               class="col-md-4 justify-content-center btn btn-info btn-lg"
             >
               Valider
