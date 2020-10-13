@@ -1,14 +1,10 @@
 // variable declarer dans la page produit creation de l object javascript depuis local storage
 
-console.log(localStorage.getItem("object"));
 line = localStorage.getItem("object");
+console.log(line);
 
 objectJs = JSON.parse(line);
-
 console.log(objectJs);
-console.log(line.length);
-console.log(objectJs[0]);
-console.log(localStorage.length);
 
 const request = new XMLHttpRequest();
 request.onreadystatechange = function () {
@@ -17,106 +13,130 @@ request.onreadystatechange = function () {
     console.log(response);
     console.log(response[0].imageUrl);
 
-    // variable des div des pricipales colonnes du panier
+    if (line === null) {
+      console.log("rempli le panier");
+      document
+        .getElementById("produit")
+        .removeChild(document.getElementById("img"));
+    } else {
+      var panierMessage = document.getElementById("panierMessage");
+      panierMessage.textContent = "Vos articles ont été ajouter dans le panier";
 
-    var prod = document.getElementById("prod");
-    var price = document.getElementById("price");
-    var quant = document.getElementById("quant");
-    var tot = document.getElementById("tot");
+      // variable des div des pricipales colonnes du panier
 
-    // variable du contenu des div de chaque colonne
+      var prod = document.getElementById("prod");
+      var lentilles = document.getElementById("lentilles");
+      //var quant = document.getElementById("quant");
+      var tot = document.getElementById("price");
 
-    var produit = document.getElementById("produit");
-    var prix = document.getElementById("prix");
-    var quantite = document.getElementById("quantite");
-    var total = document.getElementById("total");
+      // variable du contenu des div de chaque colonne
 
-    var soustotal = document.getElementById("soustotal");
+      var produit = document.getElementById("produit");
+      //var div_button = document.getElementById("div_button");
+      var lense = document.getElementById("lenses");
+      //var quantite = document.getElementById("quantite");
+      var total = document.getElementById("prix");
 
-    // clonage de contenu modele html en fonction du produit ajouter
+      var soustotal = document.getElementById("soustotal");
 
-    for (j = 0; j < objectJs.length - 1; j++) {
-      var cloneproduit = produit.cloneNode(true);
-      prod.appendChild(cloneproduit);
+      // clonage de contenu modele html en fonction du produit ajouter
 
-      var cloneprix = prix.cloneNode(true);
-      price.appendChild(cloneprix);
+      for (j = 0; j < objectJs.length - 1; j++) {
+        //var clonedivbut = div_button.cloneNode(true);
+        var cloneproduit = produit.cloneNode(true);
+        prod.appendChild(cloneproduit);
+        //prod.appendChild(clonedivbut);
 
-      var clonequantite = quantite.cloneNode(true);
-      quant.appendChild(clonequantite);
+        var clonelense = lense.cloneNode(true);
+        lentilles.appendChild(clonelense);
 
-      var clonetotal = total.cloneNode(true);
-      tot.appendChild(clonetotal);
-    }
+        //var clonequantite = quantite.cloneNode(true);
+        //quant.appendChild(clonequantite);
 
-    // recuperation de tout les contenus precedemment cloner des produits ajouter au panier
+        var clonetotal = total.cloneNode(true);
+        tot.appendChild(clonetotal);
+      }
 
-    var produitAll = document.querySelectorAll("#produit");
-    var prixAll = document.querySelectorAll("#prix");
-    var totalAll = document.querySelectorAll("#total");
-    var imgAll = document.querySelectorAll("#img");
-    var butAll = document.querySelectorAll("#supprimer");
-    console.log(butAll);
+      // recuperation de tout les contenus precedemment cloner des produits ajouter au panier
 
-    // ajout d une variable de comptage de base
+      var produitAll = document.querySelectorAll("#produit");
+      var lensesAll = document.querySelectorAll("#lenses");
+      var prixAll = document.querySelectorAll("#prix");
+      var imgAll = document.querySelectorAll("#img");
+      //var divbutAll = document.querySelectorAll("#div_button");
 
-    var somme = 0;
+      // ajout d une variable de comptage de base
 
-    console.log(imgAll);
+      var somme = 0;
 
-    // mise en place des informations produits dans leur contenu à linterieur du panier
+      console.log(imgAll);
 
-    for (i = 0; i < objectJs.length; i++) {
-      console.log(objectJs[i]);
-      console.log(objectJs.length);
-      console.log(objectJs[i][0].name);
-      console.log(objectJs[i][0].imageUrl);
+      // mise en place des informations produits dans leur contenu à linterieur du panier
 
-      imgAll[i].setAttribute("src", objectJs[i][0].imageUrl);
+      for (i = 0; i < objectJs.length; i++) {
+        console.log(objectJs[i]);
+        console.log(objectJs.length);
+        console.log(objectJs[i][0].name);
+        console.log(objectJs[i][0].imageUrl);
 
-      produitAll[i].textContent =
-        objectJs[i][0].name + "  " + "lenses:  " + objectJs[i][1];
+        imgAll[i].setAttribute("src", objectJs[i][0].imageUrl);
 
-      produitAll[i].appendChild(imgAll[i]);
+        produitAll[i].textContent = objectJs[i][0].name;
 
-      prixAll[i].textContent = objectJs[i][0].price;
+        produitAll[i].appendChild(imgAll[i]);
 
-      totalAll[i].textContent = objectJs[i][0].price;
+        lensesAll[i].textContent = objectJs[i][1];
 
-      console.log(butAll[i]);
+        prixAll[i].textContent = objectJs[i][0].price;
 
-      somme = parseInt(prixAll[i].textContent) + somme;
-      console.log(somme);
+        somme = parseInt(prixAll[i].textContent) + somme;
+        console.log(somme);
 
-      // ajout du formulaire quand panier rempli
+        var but = document.createElement("button");
+        but.setAttribute("id", "supprimer");
 
-      if (prixAll[i] !== undefined) {
-        var formulaire = document.getElementById("formulaire");
-        formulaire.classList.remove("invisible");
+        but.classList.add(
+          "col-md-3",
+          "align-content-center",
+          "btn",
+          "btn-info",
+          "mt-3",
+          "btn-sm"
+        );
 
-        var texteRemplir = document.getElementById("texte-remplir");
-        var texteValider = document.getElementById("texte-valider");
+        but.textContent = "supprimer";
+        console.log(but);
+        produitAll[i].appendChild(but);
 
-        texteRemplir.innerText = "Veuillez remplir le formulaire merci !";
-        texteValider.innerText = "Et ensuite validez votre commande";
-        console.log(texteValider.textContent);
+        // ajout du formulaire quand panier rempli
 
-        // ecoute formulaire
+        if (prixAll[i] !== undefined) {
+          var formulaire = document.getElementById("formulaire");
+          formulaire.classList.remove("invisible");
 
-        var nom = document.getElementById("nom");
-        var prenom = document.getElementById("prenom");
-        var email = document.getElementById("email");
-        var adresse = document.getElementById("adresse");
-        var ville = document.getElementById("ville");
+          var texteRemplir = document.getElementById("texte-remplir");
+          var texteValider = document.getElementById("texte-valider");
 
-        document
-          .getElementById("formulaire")
-          .addEventListener("submit", function (e) {
+          texteRemplir.innerText = "Veuillez remplir le formulaire merci !";
+          texteValider.innerText = "Et ensuite validez votre commande";
+          console.log(texteValider.textContent);
+
+          // ecoute formulaire
+
+          var nom = document.getElementById("nom");
+          var prenom = document.getElementById("prenom");
+          var email = document.getElementById("email");
+          var adresse = document.getElementById("adresse");
+          var ville = document.getElementById("ville");
+
+          var form = document.querySelector("form");
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
             // Correspond à une chaîne de la forme xxx@yyy.zzz
             var regexNom = /[a-zA-Z]/;
             var regexPrenom = /[a-zA-Z]/;
             var regexCourriel = /.+@.+\..+/;
-            var regexAdresse = /[a-zA-Z]/;
+            var regexAdresse = /[0-9] [a-zA-Z]/;
             var regexVille = /[a-zA-Z]/;
 
             var validiteNom = "";
@@ -125,61 +145,96 @@ request.onreadystatechange = function () {
             var validiteAdresse = "";
             var validiteVille = "";
 
-            if (!regexNom.test(nom.value)) {
-              validiteNom =
-                "Nom doit contenir des lettres les espaces ou le trait d'union sont autorise";
-            }
-            if (!regexPrenom.test(prenom.value)) {
-              validitePrenom =
-                "Prenom doit contenir des lettres les espaces ou le trait d'union sont autorise";
-            }
-            if (!regexCourriel.test(email.value)) {
-              validiteCourriel =
-                "Adresse email fausse suivez l 'exemple au dessus ";
-            }
-            if (!regexAdresse.test(adresse.value)) {
-              validiteAdresse =
-                "Adresse non valide doit contenir des chiffre et des lettres";
-            }
-            if (!regexVille.test(ville.value)) {
-              validiteVille =
-                "Ville doit contenir des lettres les espaces ou le trait d'union sont autorise";
-            }
-
-            //
-
             var aideNom = document.getElementById("aideNom");
             var aidePrenom = document.getElementById("aidePrenom");
             var aideEmail = document.getElementById("aideEmail");
             var aideAdresse = document.getElementById("aideAdresse");
             var aideVille = document.getElementById("aideVille");
 
-            aideNom.textContent = validiteNom;
-            aideNom.style.color = "red";
+            switch (nom.value) {
+              case regexPrenom.test !== nom.value:
+                validiteNom =
+                  "Nom doit contenir des lettres les espaces ou le trait d'union sont autorise";
+                aideNom.textContent = validiteNom;
+                aideNom.style.color = "red";
 
-            aidePrenom.textContent = validitePrenom;
-            aidePrenom.style.color = "red";
+              case regexPrenom.test === nom.value:
+                validiteNom = "";
+            }
 
-            aideEmail.textContent = validiteCourriel;
-            aideEmail.style.color = "red";
+            if (!regexPrenom.test(prenom.value)) {
+              validitePrenom =
+                "Prenom doit contenir des lettres les espaces ou le trait d'union sont autorise";
 
-            aideAdresse.textContent = validiteAdresse;
-            aideAdresse.style.color = "red";
-
-            aideVille.textContent = validiteVille;
-            aideVille.style.color = "red";
-
-            e.preventDefault();
+              aidePrenom.textContent = validitePrenom;
+              aidePrenom.style.color = "red";
+            }
+            if (!regexCourriel.test(email.value)) {
+              validiteCourriel =
+                "Adresse email fausse suivez l 'exemple au dessus ";
+              aideEmail.textContent = validiteCourriel;
+              aideEmail.style.color = "red";
+            }
+            if (!regexAdresse.test(adresse.value)) {
+              validiteAdresse =
+                "Adresse non valide doit contenir des chiffre puis des lettres";
+              aideAdresse.textContent = validiteAdresse;
+              aideAdresse.style.color = "red";
+            }
+            if (!regexVille.test(ville.value)) {
+              validiteVille =
+                "Ville doit contenir des lettres les espaces ou le trait d'union sont autorise";
+              aideVille.textContent = validiteVille;
+              aideVille.style.color = "red";
+            } else {
+              var data = {
+                name: nom.value,
+                prenom: prenom.value,
+                email: email.value,
+                adresse: adresse.value,
+                ville: ville.value,
+              };
+              datajson = JSON.stringify(data);
+              // Envoi des données du formulaire au serveur
+              // La fonction callback est ici vide
+              ajaxPost(
+                "http://localhost/javascript-web-srv/post_json.php",
+                datajson,
+                function (reponse) {
+                  console.log("bien envoyer au serveur chef");
+                  console.log(data);
+                  var messageElt = document.createElement("p");
+                  messageElt.textContent = "Votre commande a bien été envoyer.";
+                  document.getElementById("succes").appendChild(messageElt);
+                }
+              );
+            }
           });
+        }
       }
+      /*
+      var buton = document.querySelectorAll("#supprimer");
+      for (i = 0; i < objectJs.length; i++) {
+        buton[i].addEventListener("click", function () {
+          console.log("supprime moi");
+          console.log(objectJs[i]);
+          console.log(i);
+
+          let supprim = objectJs.filter(function (el, key) {
+            console.log(el, key);
+          });
+          console.log(supprim);
+        });
+      }
+      */
+      // sous total des prix des appareils
+
+      soustotal.textContent = somme;
+
+      console.log(prixAll);
     }
-
-    // sous total des prix des appareils
-
-    soustotal.textContent = somme;
-
-    console.log(prixAll);
   }
 };
+
 request.open("GET", "http://localhost:3000/api/cameras");
 request.send();

@@ -66,40 +66,36 @@
             id="prod"
             class="col-4 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
-            <h3>Produit</h3>
-            <div id="produit" class="hauteur-panier largeur-produit">
+            <h3 class="mb-5">Produit</h3>
+            <div
+              id="produit"
+              class="container d-flex flex-column align-items-center hauteur-panier largeur-produit"
+            >
               aucun
               <img
                 id="img"
-                class="border border-black"
+                class="border border-black ml-3"
                 src=""
                 alt=""
                 width="50px"
                 height="40px"
               />
-              <button id="supprimer">supprim</button>
             </div>
+            <div id="div_button"></div>
+          </div>
+          <div
+            id="lentilles"
+            class="col-4 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
+          >
+            <h3 class="mb-5">Lenses</h3>
+            <div id="lenses" class="hauteur-panier">aucune</div>
           </div>
           <div
             id="price"
-            class="col-2 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
-          >
-            <h3>Prix</h3>
-            <div id="prix" class="hauteur-panier">0</div>
-          </div>
-          <div
-            id="quant"
-            class="col-2 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
-          >
-            <h3>Nbr</h3>
-            <div id="quantite" class="hauteur-panier">0</div>
-          </div>
-          <div
-            id="tot"
             class="col-4 border border-dark px-0 pt-3 d-flex flex-column align-items-center bg-warning"
           >
-            <h3>Total</h3>
-            <div id="total" class="hauteur-panier">0</div>
+            <h3 class="mb-5">Prix</h3>
+            <div id="prix" class="hauteur-panier">0</div>
           </div>
           <div
             id="soustot"
@@ -109,7 +105,7 @@
             <p id="soustotal" class="pr-5 d-flex justify-content-end">0</p>
           </div>
           <div class="col-12 py-5 d-flex justify-content-center bg-warning">
-            <h5>Votre panier est vide pour le moment !</h5>
+            <h5 id="panierMessage">Votre panier est vide pour le moment !</h5>
           </div>
         </div>
       </section>
@@ -128,6 +124,7 @@
                 id="nom"
                 type="text"
                 class="form-control"
+                value=""
                 placeholder="name"
               />
               <span id="aideNom"></span>
@@ -138,6 +135,7 @@
                 id="prenom"
                 type="text"
                 class="form-control"
+                value=""
                 placeholder="first name"
               />
               <span id="aidePrenom"></span>
@@ -149,6 +147,7 @@
               id="email"
               type="email"
               class="form-control"
+              value=""
               placeholder="name@example.com"
             />
             <span id="aideEmail"></span>
@@ -159,6 +158,7 @@
               id="adresse"
               type="text"
               class="form-control"
+              value=""
               placeholder="number, rue"
             />
             <span id="aideAdresse"></span>
@@ -169,6 +169,7 @@
               <input
                 id="ville"
                 type="text"
+                value=""
                 class="form-control"
                 placeholder="city"
               />
@@ -176,14 +177,14 @@
             </div>
           </div>
           <div class="d-flex justify-content-center pb-3">
-            <button
+            <input
               id="valider"
-              type="text"
+              type="submit"
+              value="envoyer"
               class="col-md-4 justify-content-center btn btn-info btn-lg"
-            >
-              Valider
-            </button>
+            />
           </div>
+          <div id="succes"></div>
         </form>
       </section>
     </main>
@@ -202,6 +203,7 @@
         </li>
       </ul>
     </footer>
+    <script src="/ajax.js"></script>
     <script src="/panier.js"></script>
   </body>
 </html>
