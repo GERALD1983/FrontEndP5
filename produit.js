@@ -68,6 +68,7 @@ request.onreadystatechange = function () {
 
       localStorage.setItem(object, tabLine);
       localStorage.setItem(id, tabLine2);
+      alert("votre produit a bien été ajouter dans le panier");
 
       /*
       console.log(localStorage.getItem(object));
