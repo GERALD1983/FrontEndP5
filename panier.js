@@ -1,10 +1,13 @@
 // variable declarer dans la page produit creation de l object javascript depuis local storage
 
 line = localStorage.getItem("object");
+line2 = localStorage.getItem("id");
 console.log(line);
 
 objectJs = JSON.parse(line);
+objectJs2 = JSON.parse(line2);
 console.log(objectJs);
+console.log(objectJs2);
 
 const request = new XMLHttpRequest();
 request.onreadystatechange = function () {
@@ -120,96 +123,6 @@ request.onreadystatechange = function () {
           texteRemplir.innerText = "Veuillez remplir le formulaire merci !";
           texteValider.innerText = "Et ensuite validez votre commande";
           console.log(texteValider.textContent);
-
-          // ecoute formulaire
-
-          var nom = document.getElementById("nom");
-          var prenom = document.getElementById("prenom");
-          var email = document.getElementById("email");
-          var adresse = document.getElementById("adresse");
-          var ville = document.getElementById("ville");
-
-          var form = document.querySelector("form");
-          form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            // Correspond à une chaîne de la forme xxx@yyy.zzz
-            var regexNom = /[a-zA-Z]/;
-            var regexPrenom = /[a-zA-Z]/;
-            var regexCourriel = /.+@.+\..+/;
-            var regexAdresse = /[0-9] [a-zA-Z]/;
-            var regexVille = /[a-zA-Z]/;
-
-            var validiteNom = "";
-            var validitePrenom = "";
-            var validiteCourriel = "";
-            var validiteAdresse = "";
-            var validiteVille = "";
-
-            var aideNom = document.getElementById("aideNom");
-            var aidePrenom = document.getElementById("aidePrenom");
-            var aideEmail = document.getElementById("aideEmail");
-            var aideAdresse = document.getElementById("aideAdresse");
-            var aideVille = document.getElementById("aideVille");
-
-            switch (nom.value) {
-              case regexPrenom.test !== nom.value:
-                validiteNom =
-                  "Nom doit contenir des lettres les espaces ou le trait d'union sont autorise";
-                aideNom.textContent = validiteNom;
-                aideNom.style.color = "red";
-
-              case regexPrenom.test === nom.value:
-                validiteNom = "";
-            }
-
-            if (!regexPrenom.test(prenom.value)) {
-              validitePrenom =
-                "Prenom doit contenir des lettres les espaces ou le trait d'union sont autorise";
-
-              aidePrenom.textContent = validitePrenom;
-              aidePrenom.style.color = "red";
-            }
-            if (!regexCourriel.test(email.value)) {
-              validiteCourriel =
-                "Adresse email fausse suivez l 'exemple au dessus ";
-              aideEmail.textContent = validiteCourriel;
-              aideEmail.style.color = "red";
-            }
-            if (!regexAdresse.test(adresse.value)) {
-              validiteAdresse =
-                "Adresse non valide doit contenir des chiffre puis des lettres";
-              aideAdresse.textContent = validiteAdresse;
-              aideAdresse.style.color = "red";
-            }
-            if (!regexVille.test(ville.value)) {
-              validiteVille =
-                "Ville doit contenir des lettres les espaces ou le trait d'union sont autorise";
-              aideVille.textContent = validiteVille;
-              aideVille.style.color = "red";
-            } else {
-              var data = {
-                name: nom.value,
-                prenom: prenom.value,
-                email: email.value,
-                adresse: adresse.value,
-                ville: ville.value,
-              };
-              datajson = JSON.stringify(data);
-              // Envoi des données du formulaire au serveur
-              // La fonction callback est ici vide
-              ajaxPost(
-                "http://localhost/javascript-web-srv/post_json.php",
-                datajson,
-                function (reponse) {
-                  console.log("bien envoyer au serveur chef");
-                  console.log(data);
-                  var messageElt = document.createElement("p");
-                  messageElt.textContent = "Votre commande a bien été envoyer.";
-                  document.getElementById("succes").appendChild(messageElt);
-                }
-              );
-            }
-          });
         }
       }
       /*
@@ -238,3 +151,132 @@ request.onreadystatechange = function () {
 
 request.open("GET", "http://localhost:3000/api/cameras");
 request.send();
+
+// ecoute formulaire
+
+var nom = document.getElementById("nom");
+var prenom = document.getElementById("prenom");
+var email = document.getElementById("email");
+var adresse = document.getElementById("adresse");
+var ville = document.getElementById("ville");
+
+var form = document.querySelector("form");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  // Correspond à une chaîne de la forme xxx@yyy.zzz
+  var regexNom = /[a-zA-Z]/;
+  var regexPrenom = /[a-zA-Z]/;
+  var regexCourriel = /.+@.+\..+/;
+  var regexAdresse = /[0-9] [a-zA-Z]/;
+  var regexVille = /[a-zA-Z]/;
+
+  var validiteNom = "";
+  var validitePrenom = "";
+  var validiteCourriel = "";
+  var validiteAdresse = "";
+  var validiteVille = "";
+
+  var aideNom = document.getElementById("aideNom");
+  var aidePrenom = document.getElementById("aidePrenom");
+  var aideEmail = document.getElementById("aideEmail");
+  var aideAdresse = document.getElementById("aideAdresse");
+  var aideVille = document.getElementById("aideVille");
+
+  if (!regexNom.test(nom.value)) {
+    validiteNom =
+      "Prenom doit contenir des lettres les espaces ou le trait d'union sont autorise";
+
+    aideNom.textContent = validiteNom;
+    aideNom.style.color = "red";
+    //e.preventDefault();
+  } else if ((regexNom.test = nom.value)) {
+    aideNom.textContent = "";
+  }
+
+  if (!regexPrenom.test(prenom.value)) {
+    validitePrenom =
+      "Prenom doit contenir des lettres les espaces ou le trait d'union sont autorise";
+
+    aidePrenom.textContent = validitePrenom;
+    aidePrenom.style.color = "red";
+    //e.preventDefault();
+  } else if ((regexPrenom.test = prenom.value)) {
+    aidePrenom.textContent = "";
+  }
+  if (!regexCourriel.test(email.value)) {
+    validiteCourriel = "Adresse email fausse suivez l 'exemple au dessus ";
+    aideEmail.textContent = validiteCourriel;
+    aideEmail.style.color = "red";
+    //e.preventDefault();
+  } else if ((regexCourriel.test = email.value)) {
+    aideEmail.textContent = "";
+  }
+  if (!regexAdresse.test(adresse.value)) {
+    validiteAdresse =
+      "Adresse non valide doit contenir des chiffre puis des lettres";
+    aideAdresse.textContent = validiteAdresse;
+    aideAdresse.style.color = "red";
+    //e.preventDefault();
+  } else if ((regexAdresse.test = adresse.value)) {
+    aideAdresse.textContent = "";
+  }
+  if (!regexVille.test(ville.value)) {
+    validiteVille =
+      "Ville doit contenir des lettres les espaces ou le trait d'union sont autorise";
+    aideVille.textContent = validiteVille;
+    aideVille.style.color = "red";
+    //e.preventDefault();
+  } else if ((regexVille.test = ville.value)) {
+    aideVille.textContent = "";
+  }
+  if (
+    regexNom.test == nom.value &&
+    regexPrenom.test == prenom.value &&
+    regexCourriel.test == email.value &&
+    regexAdresse.test == adresse.value &&
+    regexVille.test == ville.value
+  ) {
+    var contact = {
+      firstName: nom.value,
+      lastName: prenom.value,
+      address: adresse.value,
+      city: ville.value,
+      email: email.value,
+    };
+    var products = objectJs2;
+
+    // var dataconta = JSON.stringify(contact);
+    // var dataprod = JSON.stringify(products);
+    var contprod = { contact, products };
+    contprodjs = JSON.stringify(contprod);
+
+    //var datajson = JSON.stringify(data);
+    console.log(contprodjs);
+
+    console.log(typeof contprodjs);
+    console.log(typeof contprod);
+    //datajs = JSON.stringify(form.submit());
+    // Envoi des données du formulaire au serveur
+    // La fonction callback est ici vide
+    ajaxPost("http://localhost:3000/api/cameras/order", contprodjs, function (
+      reponse
+    ) {
+      // if (reponse == true) {
+      //   e.unbid("click");
+      // }
+      console.log("bien envoyer au serveur chef");
+      console.log(contprod);
+      console.log(reponse);
+
+      //open("index.html", "vous aller etre rediriger vers la page acceuil");
+      reponsejs = JSON.parse(reponse);
+      console.log(reponsejs);
+      console.log(reponsejs.orderId);
+
+      var messageElt = document.createElement("p");
+      messageElt.textContent = "Votre commande a bien été envoyer.";
+      document.getElementById("succes").appendChild(messageElt);
+    });
+  }
+});
