@@ -48,19 +48,26 @@ request.onreadystatechange = function () {
       */
 
       var object = "object";
+      var id = "id";
       var line = localStorage.getItem("object");
+      var line2 = localStorage.getItem("id");
 
       var objectJs = JSON.parse(line);
+      var objectJs2 = JSON.parse(line2);
 
-      if (objectJs === null) {
+      if (objectJs === null && objectJs2 === null) {
         objectJs = [];
+        objectJs2 = [];
       }
 
       objectJs.push([response, lentilles.value]);
+      objectJs2.push(response._id);
 
       var tabLine = JSON.stringify(objectJs);
+      var tabLine2 = JSON.stringify(objectJs2);
 
       localStorage.setItem(object, tabLine);
+      localStorage.setItem(id, tabLine2);
 
       /*
       console.log(localStorage.getItem(object));
