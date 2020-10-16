@@ -126,6 +126,14 @@ request.onreadystatechange = function () {
         butonAll[i].addEventListener("click", function (e) {
           console.log("supprime moi");
           const id = e.target.getAttribute("data-id");
+          /*
+          arr2.splice(
+            arr2.findIndex((x) => {
+              return x === 1;
+            }),
+            1
+          );
+          
 
           objectJs2 = objectJs2.filter(function (obj, i) {
             console.log(obj, i);
@@ -135,6 +143,20 @@ request.onreadystatechange = function () {
             console.log(obj[0]._id, i);
             if (obj[0]._id != id) return true;
           });
+
+          */
+          objectJs2.splice(
+            objectJs2.findIndex((x) => {
+              return x === id;
+            }),
+            1
+          );
+          objectJs.splice(
+            objectJs.findIndex((x) => {
+              return x === id;
+            }),
+            1
+          );
           localStorage.setItem("object", JSON.stringify(objectJs));
           localStorage.setItem("id", JSON.stringify(objectJs2));
           console.log(id);
@@ -142,7 +164,8 @@ request.onreadystatechange = function () {
           console.log(line2);
           location.href = "panier.html";
           if (objectJs.length === 0) {
-            localStorage.clear();
+            localStorage.removeItem("object");
+            localStorage.removeItem("id");
           }
         });
 
