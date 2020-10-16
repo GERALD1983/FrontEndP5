@@ -2,7 +2,7 @@
 
 line = localStorage.getItem("object");
 line2 = localStorage.getItem("id");
-console.log(line);
+console.log(line2);
 
 objectJs = JSON.parse(line);
 objectJs2 = JSON.parse(line2);
@@ -86,6 +86,9 @@ request.onreadystatechange = function () {
 
         produitAll[i].textContent = objectJs[i][0].name;
 
+        produitAll[i].setAttribute("data-id", objectJs2[i]);
+        console.log(produitAll[i]);
+
         produitAll[i].appendChild(imgAll[i]);
 
         lensesAll[i].textContent = objectJs[i][1];
@@ -95,8 +98,12 @@ request.onreadystatechange = function () {
         somme = parseInt(prixAll[i].textContent) + somme;
         console.log(somme);
 
+        // creation d un bouton supprimer
+
         var but = document.createElement("button");
+
         but.setAttribute("id", "supprimer");
+        but.setAttribute("data-id", objectJs2[i]);
 
         but.classList.add(
           "col-md-4",
@@ -113,6 +120,32 @@ request.onreadystatechange = function () {
         console.log(but);
         produitAll[i].appendChild(but);
 
+        var butonAll = document.querySelectorAll("#supprimer");
+        console.log(butonAll);
+
+        butonAll[i].addEventListener("click", function (e) {
+          console.log("supprime moi");
+          const id = e.target.getAttribute("data-id");
+
+          objectJs2 = objectJs2.filter(function (obj, i) {
+            console.log(obj, i);
+            if (obj != id) return true;
+          });
+          objectJs = objectJs.filter(function (obj, i) {
+            console.log(obj[0]._id, i);
+            if (obj[0]._id != id) return true;
+          });
+          localStorage.setItem("object", JSON.stringify(objectJs));
+          localStorage.setItem("id", JSON.stringify(objectJs2));
+          console.log(id);
+          console.log(objectJs.length);
+          console.log(line2);
+          location.href = "panier.html";
+          if (objectJs.length === 0) {
+            localStorage.clear();
+          }
+        });
+
         // ajout du formulaire quand panier rempli
 
         if (prixAll[i] !== undefined) {
@@ -126,20 +159,6 @@ request.onreadystatechange = function () {
           texteValider.innerText = "Et ensuite validez votre commande";
           console.log(texteValider.textContent);
         }
-      }
-
-      var buton = document.querySelectorAll("#supprimer");
-      for (i = 0; i < objectJs.length; i++) {
-        buton[i].addEventListener("click", function () {
-          console.log("supprime moi");
-          console.log(objectJs[i]);
-          console.log(i);
-
-          let supprim = objectJs.filter(function (el, key) {
-            console.log(el, key);
-          });
-          console.log(supprim);
-        });
       }
 
       // sous total des prix des appareils
@@ -243,8 +262,6 @@ request.onreadystatechange = function () {
           };
           var products = objectJs2;
 
-          // var dataconta = JSON.stringify(contact);
-          // var dataprod = JSON.stringify(products);
           var contprod = { contact, products };
           contprodjs = JSON.stringify(contprod);
 
@@ -313,3 +330,23 @@ request.onreadystatechange = function () {
 
 request.open("GET", "http://localhost:3000/api/cameras");
 request.send();
+
+var arr2 = [1, 2, 3, 1, 3, 4, 5, 3, 1, 1, 4];
+console.log(arr2);
+//Remove the first number one
+arr2.splice(
+  arr2.findIndex((x) => {
+    return x === 1;
+  }),
+  1
+);
+console.log(arr2);
+
+console.log(arr);
+var arr = [1, 2, 3, 1, 3, 4, 5, 3, 1, 1, 4];
+console.log(arr);
+//Remove the first number one
+let has = arr.indexOf(1);
+//splice can remove data if receive negative numbers
+if (has > -1) arr.splice(has, 1);
+console.log(arr);
