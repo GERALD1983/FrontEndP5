@@ -35,7 +35,7 @@ request.onreadystatechange = function () {
       option.value = response.lenses[i];
     }
 
-    // ecouter de l evenement clic pour recuperer les choix de l utilsateur dans le local storage
+    // ecoute de l evenement clic pour recuperer les choix de l utilsateur dans le local storage
 
     function clic() {
       console.log("Clic !");
@@ -69,35 +69,9 @@ request.onreadystatechange = function () {
       localStorage.setItem(object, tabLine);
       localStorage.setItem(id, tabLine2);
       alert("votre produit a bien été ajouter dans le panier");
-
-      /*
-      console.log(localStorage.getItem(object));
-
-      var line = localStorage.getItem(object);
-
-      var objectJs = JSON.parse(line);
-
-      console.log(objectJs);
-      console.log(line.length);
-      console.log(objectJs.name);
-      console.log(localStorage.length);
-
- */
     }
     panier.addEventListener("click", clic);
   }
 };
 request.open("GET", url);
 request.send();
-/*
-lentilles.addEventListener("change", function () {
-  console.log(lentilles.value);
-});*/
-/*
-console.log(localStorage.length);
-localStorage.setItem("timer", 12);
-console.log(localStorage.getItem("timer"));
-
-localStorage.setItem("name", "salut");
-console.log(localStorage.getItem("name"));
-*/
