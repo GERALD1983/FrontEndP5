@@ -1,25 +1,20 @@
-/*
-const request = new XMLHttpRequest();
-request.onreadystatechange = function () {
-  if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-    var response = JSON.parse(this.responseText);
-    console.log(response);
-*/
+// ajaxget
+
 ajaxGet("http://localhost:3000/api/cameras", afficher);
+
+// recuperation carte html et parent
+
+let carte = document.getElementById("carte");
+let produit = document.getElementById("produit");
 
 function afficher(responseText) {
   var response = JSON.parse(responseText);
   console.log(response);
 
-  // recuperation carte html et parent
-
-  var carte = document.getElementById("carte");
-  let produit = document.getElementById("produit");
-
   // boucle de clonage de carte html et association parent
 
   for (let j = 0; j < response.length - 1; j++) {
-    var clone = carte.cloneNode(true);
+    let clone = carte.cloneNode(true);
     produit.appendChild(clone);
   }
 
@@ -37,6 +32,7 @@ function afficher(responseText) {
   for (let i = 0; i < response.length; i++) {
     descrip[i].textContent = response[i].description;
     img[i].setAttribute("src", response[i].imageUrl);
+    img[i].setAttribute("height", "330px");
     title[i].textContent = "Appareil photo : " + response[i].name;
     prix[i].textContent = "Prix : " + response[i].price + " euro";
 
@@ -47,9 +43,3 @@ function afficher(responseText) {
     console.log(pageProduit);
   }
 }
-/*
-  }
-};
-request.open("GET", "http://localhost:3000/api/cameras");
-request.send();
-*/
