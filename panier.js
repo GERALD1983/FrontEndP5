@@ -9,75 +9,86 @@ objectJs2 = JSON.parse(line2);
 console.log(objectJs);
 console.log(objectJs2);
 
-ajaxGet("http://localhost:3000/api/cameras", afficher);
+// stockage variable globale
 
-function afficher(responseText) {
-  var response = JSON.parse(responseText);
-  console.log(response);
-  console.log(response[0].imageUrl);
+// variable message panier
 
-  if (line === null) {
-    console.log("rempli le panier");
-    document
-      .getElementById("produit")
-      .removeChild(document.getElementById("img"));
-  } else {
-    var panierMessage = document.getElementById("panierMessage");
-    panierMessage.textContent = "Vos articles ont été ajouter dans le panier";
+let panierMessage = document.getElementById("panierMessage");
 
-    // variable des div des pricipales colonnes du panier
+// variable des div des pricipales colonnes du panier
 
-    var prod = document.getElementById("prod");
-    var lentilles = document.getElementById("lentilles");
-    var tot = document.getElementById("price");
+let prod = document.getElementById("prod");
+let lentilles = document.getElementById("lentilles");
+let tot = document.getElementById("price");
 
-    // variable du contenu des div de chaque colonne
+// variable du contenu des div de chaque colonne
 
-    var produit = document.getElementById("produit");
-    var lense = document.getElementById("lenses");
-    var total = document.getElementById("prix");
-    var soustotal = document.getElementById("soustotal");
+let produit = document.getElementById("produit");
+let lense = document.getElementById("lenses");
+let total = document.getElementById("prix");
+let soustotal = document.getElementById("soustotal");
+
+// variable de comptage de base pour la somme des produits
+
+let somme = 0;
+
+// variable ecoute formulaire
+
+let nom = document.getElementById("nom");
+let prenom = document.getElementById("prenom");
+let email = document.getElementById("email");
+let adresse = document.getElementById("adresse");
+let ville = document.getElementById("ville");
+
+let form = document.querySelector("form");
+
+// condition quand panier vide supprime image sinon active le code ci dessous
+
+if (line === null) {
+  console.log("rempli le panier");
+  document
+    .getElementById("produit")
+    .removeChild(document.getElementById("img"));
+} else {
+  panierMessage.textContent = "Vos articles ont été ajouter dans le panier";
+
+  ajaxGet("http://localhost:3000/api/cameras", afficher);
+
+  function afficher(responseText) {
+    var response = JSON.parse(responseText);
+    console.log(response);
+    console.log(response[0].imageUrl);
 
     // clonage de contenu modele html en fonction du produit ajouter
 
     for (j = 0; j < objectJs.length - 1; j++) {
-      var cloneproduit = produit.cloneNode(true);
+      let cloneproduit = produit.cloneNode(true);
       prod.appendChild(cloneproduit);
 
-      var clonelense = lense.cloneNode(true);
+      let clonelense = lense.cloneNode(true);
       lentilles.appendChild(clonelense);
 
-      var clonetotal = total.cloneNode(true);
+      let clonetotal = total.cloneNode(true);
       tot.appendChild(clonetotal);
     }
 
     // recuperation de tout les contenus precedemment cloner des produits ajouter au panier
 
-    var produitAll = document.querySelectorAll("#produit");
-    var lensesAll = document.querySelectorAll("#lenses");
-    var prixAll = document.querySelectorAll("#prix");
-    var imgAll = document.querySelectorAll("#img");
-
-    // ajout d une variable de comptage de base
-
-    var somme = 0;
-
-    console.log(imgAll);
+    let produitAll = document.querySelectorAll("#produit");
+    let lensesAll = document.querySelectorAll("#lenses");
+    let prixAll = document.querySelectorAll("#prix");
+    let imgAll = document.querySelectorAll("#img");
 
     // mise en place des informations produits dans leur contenu à linterieur du panier
 
     for (i = 0; i < objectJs.length; i++) {
-      console.log(objectJs[i]);
-      console.log(objectJs.length);
-      console.log(objectJs[i][0].name);
-      console.log(objectJs[i][0].imageUrl);
-
       imgAll[i].setAttribute("src", objectJs[i][0].imageUrl);
+      imgAll[i].setAttribute("width", "50px");
+      imgAll[i].setAttribute("height", "40px");
 
       produitAll[i].textContent = objectJs[i][0].name;
 
       produitAll[i].setAttribute("data-id", objectJs2[i]);
-      console.log(produitAll[i]);
 
       produitAll[i].appendChild(imgAll[i]);
 
@@ -86,14 +97,16 @@ function afficher(responseText) {
       prixAll[i].textContent = objectJs[i][0].price + " euro";
 
       somme = parseInt(prixAll[i].textContent) + somme;
-      console.log(somme);
 
-      // creation d un bouton supprimer
+      // suppression produit
 
-      var but = document.createElement("button");
+      // creation d un bouton supprimer et de ses attributs et son parent
+
+      let but = document.createElement("button");
 
       but.setAttribute("id", "supprimer");
       but.setAttribute("data-id", objectJs2[i]);
+      but.setAttribute("data-lenses", objectJs[i][1]);
 
       but.classList.add(
         "col-md-4",
@@ -107,15 +120,19 @@ function afficher(responseText) {
       );
 
       but.textContent = "supprimer";
-      console.log(but);
+
       produitAll[i].appendChild(but);
 
-      var butonAll = document.querySelectorAll("#supprimer");
-      console.log(butonAll);
+      // saisi des bouton supprimer et ecoute de chacun d entre eux
+
+      let butonAll = document.querySelectorAll("#supprimer");
 
       butonAll[i].addEventListener("click", function (e) {
         console.log("supprime moi");
         const id = e.target.getAttribute("data-id");
+        const lense = e.target.getAttribute("data-lenses");
+
+        // suppression elements du tableau et dans le local storage
 
         objectJs2.splice(
           objectJs2.findIndex((x) => {
@@ -125,92 +142,80 @@ function afficher(responseText) {
         );
         objectJs.splice(
           objectJs.findIndex((x) => {
-            return x === id;
+            return x[0]._id === id && x[1] === lense;
           }),
           1
         );
+
         localStorage.setItem("object", JSON.stringify(objectJs));
         localStorage.setItem("id", JSON.stringify(objectJs2));
-        console.log(id);
-        console.log(objectJs.length);
-        console.log(line2);
+
         location.href = "panier.html";
         if (objectJs.length === 0) {
           localStorage.removeItem("object");
           localStorage.removeItem("id");
         }
       });
-
-      // ajout du formulaire quand panier rempli
-
-      if (prixAll[i] !== undefined) {
-        var formulaire = document.getElementById("formulaire");
-        formulaire.classList.remove("invisible");
-
-        var texteRemplir = document.getElementById("texte-remplir");
-        var texteValider = document.getElementById("texte-valider");
-
-        texteRemplir.innerText = "Veuillez remplir le formulaire merci !";
-        texteValider.innerText = "Et ensuite validez votre commande";
-        console.log(texteValider.textContent);
-      }
     }
 
     // sous total des prix des appareils
 
     soustotal.textContent = somme + " euro";
 
-    console.log(prixAll);
+    //formulaire
 
-    // ecoute formulaire
+    // ajout du formulaire quand panier rempli
 
-    var nom = document.getElementById("nom");
-    var prenom = document.getElementById("prenom");
-    var email = document.getElementById("email");
-    var adresse = document.getElementById("adresse");
-    var ville = document.getElementById("ville");
+    if (objectJs !== undefined) {
+      let formulaire = document.getElementById("formulaire");
+      formulaire.classList.remove("invisible");
 
-    var form = document.querySelector("form");
+      let texteRemplir = document.getElementById("texte-remplir");
+      let texteValider = document.getElementById("texte-valider");
+
+      texteRemplir.innerText = "Veuillez remplir le formulaire merci !";
+      texteValider.innerText = "Et ensuite validez votre commande";
+    }
+
+    // ecoute des données utilsateur et validation formulaire avant envoi serveur
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      // Correspond à une chaîne de la forme xxx@yyy.zzz
-      var regexNom = /[a-zA-Z]/;
-      var regexPrenom = /[a-zA-Z]/;
-      var regexCourriel = /.+@.+\..+/;
-      var regexAdresse = /[0-9] [a-zA-Z]/;
-      var regexVille = /[a-zA-Z]/;
+      // regex
+      let regexNom = /[a-zA-Z]/;
+      let regexPrenom = /[a-zA-Z]/;
+      let regexCourriel = /.+@.+\..+/;
+      let regexAdresse = /[0-9] [a-zA-Z]/;
+      let regexVille = /[a-zA-Z]/;
 
-      var validiteNom = "";
-      var validitePrenom = "";
-      var validiteCourriel = "";
-      var validiteAdresse = "";
-      var validiteVille = "";
+      let validiteNom = "";
+      let validitePrenom = "";
+      let validiteCourriel = "";
+      let validiteAdresse = "";
+      let validiteVille = "";
 
-      var aideNom = document.getElementById("aideNom");
-      var aidePrenom = document.getElementById("aidePrenom");
-      var aideEmail = document.getElementById("aideEmail");
-      var aideAdresse = document.getElementById("aideAdresse");
-      var aideVille = document.getElementById("aideVille");
+      let aideNom = document.getElementById("aideNom");
+      let aidePrenom = document.getElementById("aidePrenom");
+      let aideEmail = document.getElementById("aideEmail");
+      let aideAdresse = document.getElementById("aideAdresse");
+      let aideVille = document.getElementById("aideVille");
+
+      // condition acceptation envoie serveur
 
       if (!regexNom.test(nom.value)) {
-        validiteNom =
-          "Prenom doit contenir des lettres les espaces ou le trait d'union sont autorise";
+        validiteNom = "Prenom doit contenir des lettres";
 
         aideNom.textContent = validiteNom;
         aideNom.style.color = "red";
-        //e.preventDefault();
       } else if ((regexNom.test = nom.value)) {
         aideNom.textContent = "";
       }
 
       if (!regexPrenom.test(prenom.value)) {
-        validitePrenom =
-          "Prenom doit contenir des lettres les espaces ou le trait d'union sont autorise";
+        validitePrenom = "Prenom doit contenir des lettres";
 
         aidePrenom.textContent = validitePrenom;
         aidePrenom.style.color = "red";
-        //e.preventDefault();
       } else if ((regexPrenom.test = prenom.value)) {
         aidePrenom.textContent = "";
       }
@@ -218,7 +223,6 @@ function afficher(responseText) {
         validiteCourriel = "Adresse email fausse suivez l 'exemple au dessus ";
         aideEmail.textContent = validiteCourriel;
         aideEmail.style.color = "red";
-        //e.preventDefault();
       } else if ((regexCourriel.test = email.value)) {
         aideEmail.textContent = "";
       }
@@ -227,19 +231,19 @@ function afficher(responseText) {
           "Adresse non valide doit contenir des chiffre puis des lettres";
         aideAdresse.textContent = validiteAdresse;
         aideAdresse.style.color = "red";
-        //e.preventDefault();
       } else if ((regexAdresse.test = adresse.value)) {
         aideAdresse.textContent = "";
       }
       if (!regexVille.test(ville.value)) {
-        validiteVille =
-          "Ville doit contenir des lettres les espaces ou le trait d'union sont autorise";
+        validiteVille = "Ville doit contenir des lettres";
         aideVille.textContent = validiteVille;
         aideVille.style.color = "red";
-        //e.preventDefault();
       } else if ((regexVille.test = ville.value)) {
         aideVille.textContent = "";
       }
+
+      // si toute les conditions rempli envoie au serveur et recupere la reponse serveur
+
       if (
         regexNom.test == nom.value &&
         regexPrenom.test == prenom.value &&
@@ -247,22 +251,17 @@ function afficher(responseText) {
         regexAdresse.test == adresse.value &&
         regexVille.test == ville.value
       ) {
-        var contact = {
+        let contact = {
           firstName: nom.value,
           lastName: prenom.value,
           address: adresse.value,
           city: ville.value,
           email: email.value,
         };
-        var products = objectJs2;
+        let products = objectJs2;
 
-        var contprod = { contact, products };
+        let contprod = { contact, products };
         contprodjs = JSON.stringify(contprod);
-
-        console.log(contprodjs);
-
-        console.log(typeof contprodjs);
-        console.log(typeof contprod);
 
         // Envoi des données du formulaire au serveur
 
@@ -270,6 +269,7 @@ function afficher(responseText) {
           "http://localhost:3000/api/cameras/order",
           contprodjs,
           function (reponse) {
+            // redirection page de confirmation commande
             open(
               "confirm.html",
               "vous aller etre rediriger vers la page confirmation"
@@ -283,10 +283,12 @@ function afficher(responseText) {
             console.log(reponsejs);
             console.log(reponsejs.orderId);
 
-            var objectJsOrder = "orderId";
+            let objectJsOrder = "orderId";
 
-            var lineOrderId = localStorage.getItem("orderId");
-            var orderIdent = JSON.parse(lineOrderId);
+            let lineOrderId = localStorage.getItem("orderId");
+            let orderIdent = JSON.parse(lineOrderId);
+
+            //suppression du local storage des produit panier apres commande si nouvel commande suppression total
 
             if (orderIdent === null) {
               localStorage.removeItem("id");
@@ -300,9 +302,11 @@ function afficher(responseText) {
             }
             console.log(orderIdent);
 
+            // integre la nouvelle commande apres l ancienne commande
+
             orderIdent.push(reponsejs.orderId, somme);
 
-            var tabOrderIdLine = JSON.stringify(orderIdent);
+            let tabOrderIdLine = JSON.stringify(orderIdent);
 
             localStorage.setItem(objectJsOrder, tabOrderIdLine);
           }
