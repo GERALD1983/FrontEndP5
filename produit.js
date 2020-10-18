@@ -1,10 +1,10 @@
-// recuperation route et id apres choix de l utilsateur afin de recupere un seul appareil
+//::::::::: recuperation route et id apres choix de l utilsateur afin de recupere un seul appareil :::::::::
 
 let id = window.location.search.substring(5);
 console.log(id);
 const url = `http://localhost:3000/api/cameras/${id}`;
 
-// creation de variable et saisi du contenu Html
+//:::::::::::::::::::::::::::::::: creation de variable et saisi du contenu Html ::::::::::::::::::::::::::::
 
 let descripP = document.getElementById("descrip_produit");
 let imgP = document.getElementById("img_produit");
@@ -13,16 +13,18 @@ let prixP = document.getElementById("prix_produit");
 let lentilles = document.getElementById("lentilles");
 let panier = document.getElementById("panier");
 
-// ajaxget
+//:::::::::::::::::::::::::::::::::::::::::::::::::: ajaxget :::::::::::::::::::::::::::::::::::::::::::::::::
 
 ajaxGet(url, appareil);
 
-// recupere response
+//::::::::::::::::::::::::::::::::::::::::::::: function response serveur ::::::::::::::::::::::::::::::::::::
 
 function appareil(responseServeur) {
   prod(responseServeur);
   ajoutStorage(responseServeur);
 }
+
+//:::::::::::::::::::::::::::::::::::::::::::: function affichage du produit ::::::::::::::::::::::::::::::
 
 function prod(response) {
   // ajout du contenu dans la fiche du produit
@@ -43,7 +45,7 @@ function prod(response) {
   }
 }
 
-//  fonction ecoute de l evenement clic pour recuperer les choix de l utilsateur dans le local storage
+//:::::: fonction ecoute de l evenement clic recupere les choix de l utilsateur dans le local storage :::::::
 
 function ajoutStorage(response) {
   function clic() {

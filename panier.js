@@ -1,15 +1,12 @@
-// variable declarer dans la page produit creation de l object javascript depuis local storage
+//:::::: variable declarer dans la page produit creation de l object javascript depuis local storage::::::::
 
 line = localStorage.getItem("object");
 line2 = localStorage.getItem("id");
-console.log(line2);
 
 objectJs = JSON.parse(line);
 objectJs2 = JSON.parse(line2);
-console.log(objectJs);
-console.log(objectJs2);
 
-// stockage variable globale
+//:::::::::::::::::::::::::::::::::: stockage variable globale de saisi du DOM ::::::::::::::::::::::::::::::
 
 // variable message panier
 
@@ -32,7 +29,7 @@ let soustotal = document.getElementById("soustotal");
 
 let somme = 0;
 
-// variable ecoute formulaire
+// variable saisi formulaire
 
 let nom = document.getElementById("nom");
 let prenom = document.getElementById("prenom");
@@ -42,7 +39,7 @@ let ville = document.getElementById("ville");
 
 let form = document.querySelector("form");
 
-// condition quand panier vide supprime image sinon change message
+//:::::::::::::::::::::: panier vide supprime image sinon change message et ajoute formulaire :::::::::::::
 
 if (line === null) {
   console.log("rempli le panier");
@@ -51,14 +48,33 @@ if (line === null) {
     .removeChild(document.getElementById("img"));
 } else {
   panierMessage.textContent = "Vos articles ont été ajouter dans le panier";
+
+  let formulaire = document.getElementById("formulaire");
+  formulaire.classList.remove("invisible");
+
+  let texteRemplir = document.getElementById("texte-remplir");
+  let texteValider = document.getElementById("texte-valider");
+
+  texteRemplir.innerText = "Veuillez remplir le formulaire merci !";
+  texteValider.innerText = "Et ensuite validez votre commande";
 }
+
+//:::::::::::::::::::::::::::::::::::::::::: requete ajaxget ::::::::::::::::::::::::::::::::::::::::::
 
 ajaxGet("http://localhost:3000/api/cameras", afficher);
 
-function afficher(response) {
-  console.log(response);
-  console.log(response[0].imageUrl);
+//:::::::::::::::::::::::::::::::::::: function globale response serveur ::::::::::::::::::::::::::::::::
 
+function afficher(response) {
+  cloneProduitHtml(response);
+  boucleAjoutSupprim(response);
+  sommeProduits(response);
+  formulaire(response);
+}
+
+// ::::::::::::::::::::::::::::::::::::::::: function clone html :::::::::::::::::::::::::::::::::::::
+
+function cloneProduitHtml() {
   // clonage de contenu modele html en fonction du produit ajouter
 
   for (j = 0; j < objectJs.length - 1; j++) {
@@ -71,7 +87,11 @@ function afficher(response) {
     let clonetotal = total.cloneNode(true);
     tot.appendChild(clonetotal);
   }
+}
 
+// :::::::::::::::::::::::::::::::::::: function ajoute produit et supprime produit ::::::::::::::::::::
+
+function boucleAjoutSupprim() {
   // recuperation de tout les contenus precedemment cloner des produits ajouter au panier
 
   let produitAll = document.querySelectorAll("#produit");
@@ -123,62 +143,62 @@ function afficher(response) {
 
     produitAll[i].appendChild(but);
 
-    // saisi des bouton supprimer et ecoute de chacun d entre eux
-
-    let butonAll = document.querySelectorAll("#supprimer");
-
-    butonAll[i].addEventListener("click", function (e) {
-      console.log("supprime moi");
-      const id = e.target.getAttribute("data-id");
-      const lense = e.target.getAttribute("data-lenses");
-
-      // suppression elements du tableau et dans le local storage
-
-      objectJs2.splice(
-        objectJs2.findIndex((x) => {
-          return x === id;
-        }),
-        1
-      );
-      objectJs.splice(
-        objectJs.findIndex((x) => {
-          return x[0]._id === id && x[1] === lense;
-        }),
-        1
-      );
-
-      localStorage.setItem("object", JSON.stringify(objectJs));
-      localStorage.setItem("id", JSON.stringify(objectJs2));
-
-      location.href = "panier.html";
-      if (objectJs.length === 0) {
-        localStorage.removeItem("object");
-        localStorage.removeItem("id");
-      }
-    });
+    boutonSupprimer(i);
   }
+}
 
+// :::::::::::::::::::::::::::::::::::::::::: function somme des produits ::::::::::::::::::::::::::::::
+
+function sommeProduits() {
   // sous total des prix des appareils
 
   soustotal.textContent = somme + " euro";
+}
 
+//::::::::::::::::::::::::::::::::::::: function supprimer et reset localstorage :::::::::::::::::::::
+
+function boutonSupprimer() {
+  // saisi des bouton supprimer et ecoute de chacun d entre eux
+
+  let butonAll = document.querySelectorAll("#supprimer");
+
+  butonAll[i].addEventListener("click", function (e) {
+    console.log("supprime moi");
+    const id = e.target.getAttribute("data-id");
+    const lense = e.target.getAttribute("data-lenses");
+
+    // suppression elements du tableau et dans le local storage
+
+    objectJs2.splice(
+      objectJs2.findIndex((x) => {
+        return x === id;
+      }),
+      1
+    );
+    objectJs.splice(
+      objectJs.findIndex((x) => {
+        return x[0]._id === id && x[1] === lense;
+      }),
+      1
+    );
+
+    localStorage.setItem("object", JSON.stringify(objectJs));
+    localStorage.setItem("id", JSON.stringify(objectJs2));
+
+    location.href = "panier.html";
+    if (objectJs.length === 0) {
+      localStorage.removeItem("object");
+      localStorage.removeItem("id");
+    }
+  });
+}
+
+//::::::::::::::::::::::::::::::::::: function envoi formulaire et reponse serveur :::::::::::::::::::::::::::::
+
+function formulaire() {
   //formulaire
 
-  // ajout du formulaire quand panier rempli
-
-  if (objectJs !== undefined) {
-    let formulaire = document.getElementById("formulaire");
-    formulaire.classList.remove("invisible");
-
-    let texteRemplir = document.getElementById("texte-remplir");
-    let texteValider = document.getElementById("texte-valider");
-
-    texteRemplir.innerText = "Veuillez remplir le formulaire merci !";
-    texteValider.innerText = "Et ensuite validez votre commande";
-  }
-
   // ecoute des données utilsateur et validation formulaire avant envoi serveur
-
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     // regex
