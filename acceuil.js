@@ -1,14 +1,13 @@
 // ajaxget
 
-ajaxGet("http://localhost:3000/api/cameras", afficher);
+ajaxGet("http://localhost:3000/api/cameras", afficherProduits);
 
 // recuperation carte html et parent
 
 let carte = document.getElementById("carte");
 let produit = document.getElementById("produit");
 
-function afficher(responseText) {
-  var response = JSON.parse(responseText);
+function afficherProduits(response) {
   console.log(response);
 
   // boucle de clonage de carte html et association parent
