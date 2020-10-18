@@ -1,10 +1,10 @@
-//recupere localstorage order command
+//::::::::::::::::::::::::::::::recupere localstorage order command:::::::::::::::::::::::::::::::
 
 var lineCommand = localStorage.getItem("orderId");
 var objectCommand = JSON.parse(lineCommand);
 console.log(objectCommand);
 
-// changement de contenu quand la commande est valider
+//:::::::::::::::::::::: changement de contenu quand la commande est valider ::::::::::::::::::::::
 
 if (lineCommand !== null) {
   var titCommand = document.getElementById("command");

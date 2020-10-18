@@ -1,16 +1,20 @@
-// ajaxget
+//::::::::::::::::::::::::::::::::::::::::::::::::: ajaxget :::::::::::::::::::::::::::::::::::::::::::::::::
 
 ajaxGet("http://localhost:3000/api/cameras", afficherProduits);
 
-// recuperation carte html et parent
+//::::::::::::::::::::::::::::::::::::: recuperation carte html et parent :::::::::::::::::::::::::::::::::::
 
 let carte = document.getElementById("carte");
 let produit = document.getElementById("produit");
+
+// ::::::::::::::::::::::::::::::::::::::::: function response serveur :::::::::::::::::::::::::::::::::::::::
 
 function afficherProduits(responseServeur) {
   afficherCarte(responseServeur);
   rempliCarte(responseServeur);
 }
+
+// ::::::::::::::::::::::::::::::::::::::::: function affiche les carte ::::::::::::::::::::::::::::::::::::::
 
 function afficherCarte(response) {
   // boucle de clonage de carte html et association parent
@@ -20,6 +24,8 @@ function afficherCarte(response) {
     produit.appendChild(clone);
   }
 }
+
+//::::::::::::::::::::::::::::::::::::::: function rempli le contenu des cartes ::::::::::::::::::::::::::::
 
 function rempliCarte(response) {
   // recuperation de toutes les carte cloner et leur contenu
