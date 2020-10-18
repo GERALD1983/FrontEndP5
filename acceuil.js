@@ -7,9 +7,9 @@ ajaxGet("http://localhost:3000/api/cameras", afficherProduits);
 let carte = document.getElementById("carte");
 let produit = document.getElementById("produit");
 
-function afficherProduits(salut) {
-  afficherCarte(salut);
-  rempliCarte(salut);
+function afficherProduits(responseServeur) {
+  afficherCarte(responseServeur);
+  rempliCarte(responseServeur);
 }
 
 function afficherCarte(response) {
