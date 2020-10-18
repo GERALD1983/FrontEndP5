@@ -7,16 +7,21 @@ ajaxGet("http://localhost:3000/api/cameras", afficherProduits);
 let carte = document.getElementById("carte");
 let produit = document.getElementById("produit");
 
-function afficherProduits(response) {
-  console.log(response);
+function afficherProduits(salut) {
+  afficherCarte(salut);
+  rempliCarte(salut);
+}
 
+function afficherCarte(response) {
   // boucle de clonage de carte html et association parent
 
   for (let j = 0; j < response.length - 1; j++) {
     let clone = carte.cloneNode(true);
     produit.appendChild(clone);
   }
+}
 
+function rempliCarte(response) {
   // recuperation de toutes les carte cloner et leur contenu
 
   let carteClone = document.querySelectorAll("#carte");
