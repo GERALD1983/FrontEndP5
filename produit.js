@@ -19,9 +19,12 @@ ajaxGet(url, appareil);
 
 // recupere response
 
-function appareil(response) {
-  console.log(response);
+function appareil(responseServeur) {
+  prod(responseServeur);
+  ajoutStorage(responseServeur);
+}
 
+function prod(response) {
   // ajout du contenu dans la fiche du produit
 
   descripP.textContent = response.description;
@@ -38,9 +41,11 @@ function appareil(response) {
     option.textContent = response.lenses[i];
     option.value = response.lenses[i];
   }
+}
 
-  //  fonction ecoute de l evenement clic pour recuperer les choix de l utilsateur dans le local storage
+//  fonction ecoute de l evenement clic pour recuperer les choix de l utilsateur dans le local storage
 
+function ajoutStorage(response) {
   function clic() {
     console.log("Clic !");
 
