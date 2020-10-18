@@ -54,8 +54,7 @@ if (line === null) {
 
   ajaxGet("http://localhost:3000/api/cameras", afficher);
 
-  function afficher(responseText) {
-    var response = JSON.parse(responseText);
+  function afficher(response) {
     console.log(response);
     console.log(response[0].imageUrl);
 

@@ -15,12 +15,11 @@ let panier = document.getElementById("panier");
 
 // ajaxget
 
-ajaxGet(url, afficher);
+ajaxGet(url, appareil);
 
 // recupere response
 
-function afficher(responseText) {
-  var response = JSON.parse(responseText);
+function appareil(response) {
   console.log(response);
 
   // ajout du contenu dans la fiche du produit
