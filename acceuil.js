@@ -1,18 +1,20 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::: ajaxget :::::::::::::::::::::::::::::::::::::::::::::::::
 
-ajaxGet("http://localhost:3000/api/cameras", afficherProduits);
-
 //::::::::::::::::::::::::::::::::::::: recuperation carte html et parent :::::::::::::::::::::::::::::::::::
 
 let carte = document.getElementById("carte");
 let produit = document.getElementById("produit");
 
 // ::::::::::::::::::::::::::::::::::::::::: function response serveur :::::::::::::::::::::::::::::::::::::::
-
-function afficherProduits(responseServeur) {
-  afficherCarte(responseServeur);
-  rempliCarte(responseServeur);
-}
+ajaxGet("http://localhost:3000/api/cameras")
+  .then(function (response) {
+    afficherCarte(response);
+    rempliCarte(response);
+  })
+  .catch(function (err) {
+    console.log(err);
+    alert("serveur Hors service");
+  });
 
 // ::::::::::::::::::::::::::::::::::::::::: function affiche les carte ::::::::::::::::::::::::::::::::::::::
 

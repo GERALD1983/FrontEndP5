@@ -15,14 +15,15 @@ let panier = document.getElementById("panier");
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::: ajaxget :::::::::::::::::::::::::::::::::::::::::::::::::
 
-ajaxGet(url, appareil);
-
-//::::::::::::::::::::::::::::::::::::::::::::: function response serveur ::::::::::::::::::::::::::::::::::::
-
-function appareil(responseServeur) {
-  prod(responseServeur);
-  ajoutStorage(responseServeur);
-}
+ajaxGet(url)
+  .then(function (response) {
+    prod(response);
+    ajoutStorage(response);
+  })
+  .catch(function (err) {
+    console.log(err);
+    alert("serveur Hors service");
+  });
 
 //:::::::::::::::::::::::::::::::::::::::::::: function affichage du produit ::::::::::::::::::::::::::::::
 
