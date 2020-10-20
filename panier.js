@@ -39,7 +39,7 @@ let ville = document.getElementById("ville");
 
 let form = document.querySelector("form");
 
-//:::::::::::::::::::::: panier vide supprime image sinon change message et ajoute formulaire :::::::::::::
+//::::::::::::::::::: panier vide supprime image sinon change message fais requete ajoute formulaire :::::::::::::
 
 if (line === null) {
   console.log("rempli le panier");
@@ -57,11 +57,11 @@ if (line === null) {
 
   texteRemplir.innerText = "Veuillez remplir le formulaire merci !";
   texteValider.innerText = "Et ensuite validez votre commande";
+
+  //:::::::::::::::::::::::::::::::::::::::::: requete ajaxget ::::::::::::::::::::::::::::::::::::::::::
+
+  ajaxGet("http://localhost:3000/api/cameras", afficher);
 }
-
-//:::::::::::::::::::::::::::::::::::::::::: requete ajaxget ::::::::::::::::::::::::::::::::::::::::::
-
-ajaxGet("http://localhost:3000/api/cameras", afficher);
 
 //:::::::::::::::::::::::::::::::::::: function globale response serveur ::::::::::::::::::::::::::::::::
 
@@ -89,7 +89,7 @@ function cloneProduitHtml() {
   }
 }
 
-// :::::::::::::::::::::::::::::::::::: function ajoute produit et supprime produit ::::::::::::::::::::
+// :::::::::::::::::::::::::::::::::::: function ajoute contenu produit et supprime produit ::::::::::::::::::::
 
 function boucleAjoutSupprim() {
   // recuperation de tout les contenus precedemment cloner des produits ajouter au panier
@@ -294,13 +294,7 @@ function formulaire() {
           "vous aller etre rediriger vers la page confirmation"
         );
 
-        console.log("bien envoyer au serveur chef");
-        console.log(contprod);
-        console.log(reponse);
-
         reponsejs = JSON.parse(reponse);
-        console.log(reponsejs);
-        console.log(reponsejs.orderId);
 
         let objectJsOrder = "orderId";
 
@@ -319,7 +313,6 @@ function formulaire() {
           localStorage.removeItem("orderId");
           orderIdent = [];
         }
-        console.log(orderIdent);
 
         // integre la nouvelle commande apres l ancienne commande
 
