@@ -60,16 +60,16 @@ if (line === null) {
 
   //:::::::::::::::::::::::::::::::::::::::::: requete ajaxget ::::::::::::::::::::::::::::::::::::::::::
 
-  ajaxGet("http://localhost:3000/api/cameras", afficher);
-}
-
-//:::::::::::::::::::::::::::::::::::: function globale response serveur ::::::::::::::::::::::::::::::::
-
-function afficher(response) {
-  cloneProduitHtml(response);
-  boucleAjoutSupprim(response);
-  sommeProduits(response);
-  formulaire(response);
+  ajaxGet("http://localhost:3000/api/cameras")
+    .then(function (response) {
+      cloneProduitHtml(response);
+      boucleAjoutSupprim(response);
+      sommeProduits(response);
+      envoiFormulaire(response);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
 }
 
 // ::::::::::::::::::::::::::::::::::::::::: function clone html :::::::::::::::::::::::::::::::::::::
@@ -195,7 +195,7 @@ function boutonSupprimer() {
 
 //::::::::::::::::::::::::::::::::::: function envoi formulaire et reponse serveur :::::::::::::::::::::::::::::
 
-function formulaire() {
+var envoiFormulaire = function () {
   //formulaire
 
   // ecoute des données utilsateur et validation formulaire avant envoi serveur
@@ -324,4 +324,4 @@ function formulaire() {
       });
     }
   });
-}
+};
