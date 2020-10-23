@@ -20,9 +20,10 @@ let tot = document.getElementById("price");
 
 // variable du contenu des div de chaque colonne
 
-let produit = document.getElementById("produit");
-let lense = document.getElementById("lenses");
-let total = document.getElementById("prix");
+let produit = document.querySelector(".produit");
+let lense = document.querySelector(".lenses");
+let total = document.querySelector(".prix");
+
 let soustotal = document.getElementById("soustotal");
 
 // variable de comptage de base pour la somme des produits
@@ -43,9 +44,7 @@ let form = document.querySelector("form");
 
 if (line === null) {
   console.log("rempli le panier");
-  document
-    .getElementById("produit")
-    .removeChild(document.getElementById("img"));
+  produit.removeChild(document.querySelector(".img"));
 } else {
   panierMessage.textContent = "Vos articles ont été ajouter dans le panier";
 
@@ -94,10 +93,10 @@ function cloneProduitHtml() {
 function boucleAjoutSupprim() {
   // recuperation de tout les contenus precedemment cloner des produits ajouter au panier
 
-  let produitAll = document.querySelectorAll("#produit");
-  let lensesAll = document.querySelectorAll("#lenses");
-  let prixAll = document.querySelectorAll("#prix");
-  let imgAll = document.querySelectorAll("#img");
+  let produitAll = document.querySelectorAll(".produit");
+  let lensesAll = document.querySelectorAll(".lenses");
+  let prixAll = document.querySelectorAll(".prix");
+  let imgAll = document.querySelectorAll(".img");
 
   // mise en place des informations produits dans leur contenu à linterieur du panier
 
@@ -124,7 +123,6 @@ function boucleAjoutSupprim() {
 
     let but = document.createElement("button");
 
-    but.setAttribute("id", "supprimer");
     but.setAttribute("data-id", objectJs2[i]);
     but.setAttribute("data-lenses", objectJs[i][1]);
 
@@ -136,7 +134,8 @@ function boucleAjoutSupprim() {
       "btn",
       "btn-info",
       "mt-3",
-      "btn-sm"
+      "btn-sm",
+      "supprimer"
     );
 
     but.textContent = "supprimer";
@@ -157,10 +156,10 @@ function sommeProduits() {
 
 //::::::::::::::::::::::::::::::::::::: function supprimer et reset localstorage :::::::::::::::::::::
 
-function boutonSupprimer() {
+function boutonSupprimer(i) {
   // saisi des bouton supprimer et ecoute de chacun d entre eux
 
-  let butonAll = document.querySelectorAll("#supprimer");
+  let butonAll = document.querySelectorAll(".supprimer");
 
   butonAll[i].addEventListener("click", function (e) {
     console.log("supprime moi");
@@ -283,18 +282,22 @@ var envoiFormulaire = function () {
       let contprod = { contact, products };
       contprodjs = JSON.stringify(contprod);
 
-      // Envoi des données du formulaire au serveur
+      // Envoi des données du formulaire au serveur avec promise
 
-      ajaxPost("http://localhost:3000/api/cameras/order", contprodjs, function (
-        reponse
-      ) {
+      ajaxPost("http://localhost:3000/api/cameras/order", contprodjs)
+        .then(function (reponse) {
+          poster(reponse);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+
+      function poster(reponse) {
         // redirection page de confirmation commande
-        open(
-          "confirm.html",
-          "vous aller etre rediriger vers la page confirmation"
-        );
 
-        reponsejs = JSON.parse(reponse);
+        location.href = "confirm.html";
+
+        reponsejs = reponse;
 
         let objectJsOrder = "orderId";
 
@@ -321,7 +324,7 @@ var envoiFormulaire = function () {
         let tabOrderIdLine = JSON.stringify(orderIdent);
 
         localStorage.setItem(objectJsOrder, tabOrderIdLine);
-      });
+      }
     }
   });
 };
